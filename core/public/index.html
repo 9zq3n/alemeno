@@ -4,13 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Credit App Test</title>
+    <title>Credit Approval Dashboard</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
     <div class="container">
-        <h1>Credit App</h1>
+        <header style="margin-bottom: 40px; border-bottom: 1px solid #e5e5e5; padding-bottom: 20px;">
+            <h1 style="margin: 0; border: none; padding: 0;">Credit Approval Ecosystem</h1>
+            <p style="color: #666; margin: 5px 0 0 0; font-size: 14px;">Loan Processing & Risk Assessment Interface</p>
+        </header>
 
         <nav class="tabs">
             <button class="tab active" data-tab="register">Register</button>
@@ -80,9 +83,11 @@
         </div>
 
         <div class="output-section">
-            <small>Response Output</small>
+            <small>System Response</small>
             <pre id="output"></pre>
         </div>
+
+
     </div>
 
     <script src="/static/app.js"></script>

@@ -9,7 +9,7 @@ DATA_DIR = Path(__file__).resolve().parent.parent / 'data'
 
 @shared_task
 def ingest_customers():
-    """load customer data from excel into db"""
+    """Load customer data from Excel into DB."""
     wb = load_workbook(DATA_DIR / 'customer_data.xlsx')
     ws = wb.active
     
@@ -44,7 +44,7 @@ def ingest_loans():
         if row[0] is None:
             continue
         
-        # skip if customer doesn't exist
+        # Skip if customer doesn't exist
         cust = Customer.objects.filter(id=row[0]).first()
         if not cust:
             skipped += 1

@@ -27,7 +27,7 @@ def home(request):
     return render(request, 'index.html')
 
 
-# emi calculator - using standard reducing balance formula
+# EMI calculator using standard reducing balance formula
 def calc_emi(principal, rate, months):
     if rate == 0:
         return principal / months
@@ -37,8 +37,10 @@ def calc_emi(principal, rate, months):
 
 
 def get_credit_score(customer):
-    """calculates score based on loan history, payment behavior etc
-    returns 50 if no loan history exists"""
+    """
+    Calculates credit score based on loan history, payment behavior, and current debt.
+    Returns 50 if no loan history exists.
+    """
     customer_loans = Loan.objects.filter(customer=customer)
     
     if not customer_loans.exists():
@@ -76,7 +78,7 @@ def get_credit_score(customer):
 
 
 def _get_min_rate(score, requested):
-    """internal helper for interest rate correction"""
+    """Internal helper for interest rate correction based on credit score."""
     if score > 50:
         return requested
     if score > 30:
@@ -111,6 +113,7 @@ def _check_approval(customer, amt, rate, tenure):
     return (False, score)
 
 
+
 @api_view(['POST'])
 def register(request):
     ser = RegisterRequestSerializer(data=request.data)
@@ -119,7 +122,7 @@ def register(request):
     
     data = ser.validated_data
     
-    # round limit to nearest lakh (36x salary rule)
+    # Calculate approved limit (rounded to nearest lakh, 36x monthly salary)
     limit = round(data['monthly_income'] * 36 / 100000) * 100000
     
     cust = Customer.objects.create(
@@ -141,23 +144,32 @@ def register(request):
     }, status=status.HTTP_201_CREATED)
 
 
-@api_view(['POST'])
-def check_eligibility(request):
-    ser = LoanRequestSerializer(data=request.data)
-    if ser.is_valid() == False:
-        return Response(ser.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    data = ser.validated_data
-    cust_id = data['customer_id']
-    
-    try:
-        cust = Customer.objects.get(pk=cust_id)
-    except Customer.DoesNotExist:
-        return Response({'error': 'customer not found'}, status=404)
-    
+
+
+
+
+def _process_loan_application(data, cust):
+    """Common logic for checking eligibility and stats"""
     approved, score = _check_approval(cust, data['loan_amount'], data['interest_rate'], data['tenure'])
     corrected_rate = _get_min_rate(score, data['interest_rate'])
     emi = calc_emi(data['loan_amount'], corrected_rate, data['tenure'])
+    return approved, corrected_rate, emi
+
+
+@api_view(['POST'])
+def check_eligibility(request):
+    ser = LoanRequestSerializer(data=request.data)
+    if not ser.is_valid():
+        return Response(ser.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    data = ser.validated_data
+    
+    try:
+        cust = Customer.objects.get(pk=data['customer_id'])
+    except Customer.DoesNotExist:
+        return Response({'error': 'customer not found'}, status=404)
+    
+    approved, corrected_rate, emi = _process_loan_application(data, cust)
     
     return Response({
         'customer_id': cust.id,
@@ -177,14 +189,11 @@ def create_loan(request):
     
     data = ser.validated_data
     
-    # fetch customer
     cust = Customer.objects.filter(id=data['customer_id']).first()
     if cust is None:
         return Response({'error': 'Customer does not exist'}, status=status.HTTP_404_NOT_FOUND)
     
-    approved, score = _check_approval(cust, data['loan_amount'], data['interest_rate'], data['tenure'])
-    corrected_rate = _get_min_rate(score, data['interest_rate'])
-    emi = calc_emi(data['loan_amount'], corrected_rate, data['tenure'])
+    approved, corrected_rate, emi = _process_loan_application(data, cust)
     
     if not approved:
         return Response({

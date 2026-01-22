@@ -9,9 +9,6 @@ class Customer(models.Model):
     monthly_salary = models.DecimalField(max_digits=12, decimal_places=2)
     approved_limit = models.DecimalField(max_digits=12, decimal_places=2)
 
-    class Meta:
-        db_table = 'customers'
-    
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
@@ -25,6 +22,3 @@ class Loan(models.Model):
     emis_paid_on_time = models.IntegerField(default=0)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
-
-    class Meta:
-        db_table = 'loans'
