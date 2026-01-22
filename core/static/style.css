@@ -1,0 +1,286 @@
+:root {
+    --bg-color: #ffffff;
+    --text-color: #1a1a1a;
+    --border-color: #e5e5e5;
+    --accent-color: #000000;
+    --subtle-text: #666666;
+    --radius: 8px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1 {
+    font-weight: 600;
+    font-size: 24px;
+    letter-spacing: -0.5px;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+h3 {
+    font-weight: 500;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--subtle-text);
+    margin: 0 0 15px 0;
+}
+
+/* Layout */
+.container {
+    max-width: 720px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.tab {
+    background: transparent;
+    border: none;
+    color: var(--subtle-text);
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: all 0.2s;
+}
+
+.tab:hover {
+    background: #f5f5f5;
+    color: var(--text-color);
+    opacity: 1;
+}
+
+.tab.active {
+    background: var(--accent-color);
+    color: #fff;
+    opacity: 1;
+}
+
+/* Panels */
+.panel {
+    display: none;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.panel.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.api-section {
+    margin-bottom: 50px;
+}
+
+/* Forms */
+form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+/* Simple Search Forms (View Data) */
+.simple-search {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 20px 0;
+    border-bottom: 1px dashed var(--border-color);
+    background: transparent;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+}
+
+.simple-search:last-of-type {
+    border-bottom: none;
+}
+
+.simple-search h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 150px;
+    color: var(--subtle-text);
+}
+
+.simple-search input {
+    flex: 1;
+}
+
+.simple-search button {
+    width: auto;
+    margin: 0;
+    padding: 12px 20px;
+    grid-column: auto;
+}
+
+input {
+    padding: 12px 14px;
+    font-size: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    outline: none;
+    transition: all 0.2s;
+    background: transparent;
+    color: var(--text-color);
+    width: 100%;
+    -webkit-appearance: none;
+    /* fix for iOS input shadow */
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    .container {
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+
+    form {
+        grid-template-columns: 1fr;
+        /* Stack inputs vertically */
+        gap: 15px;
+    }
+
+    button {
+        grid-column: span 1;
+        /* Button takes full width of single column */
+        width: 100%;
+        margin-top: 5px;
+    }
+
+    /* Stack simple search on mobile */
+    .simple-search {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        text-align: left;
+    }
+
+    .simple-search h4 {
+        margin-bottom: 5px;
+    }
+
+    .tabs {
+        overflow-x: auto;
+        padding-bottom: 5px;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+input:focus {
+    border-color: var(--accent-color);
+}
+
+input::placeholder {
+    color: #a3a3a3;
+}
+
+button {
+    background-color: var(--accent-color);
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: opacity 0.2s;
+    grid-column: span 2;
+    justify-self: end;
+    margin-top: 10px;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+/* Loan List */
+.loan-item {
+    font-size: 13px;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.loan-item span {
+    color: var(--subtle-text);
+}
+
+.loan-item b {
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+/* Output Area */
+#output {
+    background: #fafafa;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 20px;
+    font-family: "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+    color: #444;
+}
+
+small {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--subtle-text);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.output-section {
+    margin-top: 40px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+}
+
+.action-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}

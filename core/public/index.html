@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit App Test</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Credit App</h1>
+
+        <nav class="tabs">
+            <button class="tab active" data-tab="register">Register</button>
+            <button class="tab" data-tab="eligibility">Eligibility</button>
+            <button class="tab" data-tab="create-loan">Create Loan</button>
+            <button class="tab" data-tab="view-data">View Data</button>
+        </nav>
+
+        <div class="panel active" id="register">
+            <div class="api-section">
+                <h3>1. Register Customer</h3>
+                <form id="register-form">
+                    <input type="text" name="first_name" placeholder="First Name" required>
+                    <input type="text" name="last_name" placeholder="Last Name" required>
+                    <input type="number" name="age" placeholder="Age" required>
+                    <input type="number" name="phone_number" placeholder="Phone" required>
+                    <input type="number" name="monthly_income" placeholder="Monthly Income" required>
+                    <button>Register</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="panel" id="eligibility">
+            <div class="api-section">
+                <h3>2. Check Eligibility</h3>
+                <form id="eligibility-form">
+                    <input type="number" name="customer_id" placeholder="Cust ID" required>
+                    <input type="number" name="loan_amount" placeholder="Amount" required>
+                    <input type="number" step="0.1" name="interest_rate" placeholder="Rate %" required>
+                    <input type="number" name="tenure" placeholder="Months" required>
+                    <button>Check</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="panel" id="create-loan">
+            <div class="api-section">
+                <h3>3. Create Loan</h3>
+                <form id="loan-form">
+                    <input type="number" name="customer_id" placeholder="Cust ID" required>
+                    <input type="number" name="loan_amount" placeholder="Amount" required>
+                    <input type="number" step="0.1" name="interest_rate" placeholder="Rate %" required>
+                    <input type="number" name="tenure" placeholder="Months" required>
+                    <button>Create</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="panel" id="view-data">
+            <div class="api-section">
+                <h3>4. View Data</h3>
+
+                <form id="view-form" class="simple-search" style="flex-wrap: wrap;">
+                    <h4>Check Loan Status</h4>
+                    <input type="number" name="customer_id" placeholder="Enter Customer ID" required>
+                    <button>Fetch Loans</button>
+                </form>
+
+                <form id="customer-form" class="simple-search" style="flex-wrap: wrap;">
+                    <h4>Check Customer Profile</h4>
+                    <input type="number" name="customer_id" placeholder="Enter Customer ID" required>
+                    <button>Fetch Profile</button>
+                </form>
+
+                <div id="loans-list" style="margin-top: 20px;"></div>
+            </div>
+        </div>
+
+        <div class="output-section">
+            <small>Response Output</small>
+            <pre id="output"></pre>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+
+</html>
